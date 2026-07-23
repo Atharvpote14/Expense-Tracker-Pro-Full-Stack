@@ -11,14 +11,18 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
+  "https://expense-tracker-pro-ebon.vercel.app",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
 app.use(cors({
-  origin: allowedOrigins.length ? allowedOrigins : "*",
+  origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
+
+app.options("*", cors());
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
