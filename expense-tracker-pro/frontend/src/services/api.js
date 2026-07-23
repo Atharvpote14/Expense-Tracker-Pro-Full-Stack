@@ -1,33 +1,33 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '',
   headers: { 'Content-Type': 'application/json' },
 });
 
 export const expenseService = {
   getAll(params) {
-    return api.get('/expenses', { params });
+    return api.get('/api/expenses', { params });
   },
 
   getById(id) {
-    return api.get(`/expenses/${id}`);
+    return api.get(`/api/expenses/${id}`);
   },
 
   create(data) {
-    return api.post('/expenses', data);
+    return api.post('/api/expenses', data);
   },
 
   update(id, data) {
-    return api.put(`/expenses/${id}`, data);
+    return api.put(`/api/expenses/${id}`, data);
   },
 
   delete(id) {
-    return api.delete(`/expenses/${id}`);
+    return api.delete(`/api/expenses/${id}`);
   },
 
   getAnalytics() {
-    return api.get('/expenses/analytics');
+    return api.get('/api/expenses/analytics');
   },
 };
 

@@ -15,6 +15,7 @@ function AppContent() {
   const [darkMode, setDarkMode] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
   const addToast = useToast();
   const navigate = useNavigate();
 
@@ -25,12 +26,15 @@ function AppContent() {
   }, []);
 
   const handleFormSubmit = useCallback(async (formData) => {
+    setSaving(true);
     try {
       await expenseService.create(formData);
       addToast('Expense added successfully', 'success');
       setShowForm(false);
     } catch (err) {
       addToast(err.response?.data?.message || 'Failed to add expense', 'error');
+    } finally {
+      setSaving(false);
     }
   }, [addToast]);
 
@@ -72,6 +76,7 @@ function AppContent() {
         onClose={() => setShowForm(false)}
         onSubmit={handleFormSubmit}
         initialData={null}
+        disabled={saving}
       />
     </div>
   );

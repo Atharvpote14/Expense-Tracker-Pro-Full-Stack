@@ -17,6 +17,7 @@ export default function Expenses() {
   const [sort, setSort] = useState('latest');
   const [page, setPage] = useState(1);
   const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [editingExpense, setEditingExpense] = useState(null);
 
   const buildParams = useCallback(() => {
@@ -40,6 +41,7 @@ export default function Expenses() {
   const pagination = data?.pagination || null;
 
   const handleCreate = async (formData) => {
+    setSaving(true);
     try {
       await expenseService.create(formData);
       addToast('Expense added successfully', 'success');
@@ -47,10 +49,13 @@ export default function Expenses() {
       refetch();
     } catch (err) {
       addToast(err.response?.data?.message || 'Failed to add expense', 'error');
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleUpdate = async (formData) => {
+    setSaving(true);
     try {
       await expenseService.update(editingExpense.id, formData);
       addToast('Expense updated successfully', 'success');
@@ -59,6 +64,8 @@ export default function Expenses() {
       refetch();
     } catch (err) {
       addToast(err.response?.data?.message || 'Failed to update expense', 'error');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -141,6 +148,7 @@ export default function Expenses() {
         onClose={() => { setShowForm(false); setEditingExpense(null); }}
         onSubmit={handleFormSubmit}
         initialData={editingExpense}
+        disabled={saving}
       />
     </motion.div>
   );

@@ -12,7 +12,12 @@ export function useFetch(fetchFn, deps = []) {
       const res = await fetchFn();
       setData(res.data);
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Something went wrong');
+      const msg = err.response?.data?.message || err.message || 'Something went wrong';
+      if (!err.response) {
+        setError('Unable to reach the server. The backend may be sleeping (Render free tier). Please wait a moment and try again.');
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }

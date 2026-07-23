@@ -5,7 +5,7 @@ import { FiX } from 'react-icons/fi';
 const CATEGORIES = ['Food', 'Travel', 'Shopping', 'Bills', 'Entertainment', 'Education', 'Health', 'Other'];
 const PAYMENT_METHODS = ['Cash', 'UPI', 'Credit Card', 'Debit Card', 'Net Banking', 'Wallet'];
 
-export default function ExpenseForm({ isOpen, onClose, onSubmit, initialData }) {
+export default function ExpenseForm({ isOpen, onClose, onSubmit, initialData, disabled }) {
   const [form, setForm] = useState({
     title: '',
     amount: '',
@@ -150,9 +150,9 @@ export default function ExpenseForm({ isOpen, onClose, onSubmit, initialData }) 
               </div>
 
               <div className="form-actions">
-                <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
-                <button type="submit" className="btn-primary">
-                  {initialData ? 'Update Expense' : 'Add Expense'}
+                <button type="button" className="btn-secondary" onClick={onClose} disabled={disabled}>Cancel</button>
+                <button type="submit" className="btn-primary" disabled={disabled}>
+                  {disabled ? 'Saving...' : initialData ? 'Update Expense' : 'Add Expense'}
                 </button>
               </div>
             </form>
